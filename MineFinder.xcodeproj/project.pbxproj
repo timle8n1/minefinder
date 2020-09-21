@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E78D288625104D85007FB150 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78D288525104D85007FB150 /* Cell.swift */; };
+		E78D288725104D85007FB150 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78D288525104D85007FB150 /* Cell.swift */; };
 		E7B84752250EC2CD00DA6923 /* MineFinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B84751250EC2CD00DA6923 /* MineFinderApp.swift */; };
 		E7B84754250EC2CD00DA6923 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B84753250EC2CD00DA6923 /* ContentView.swift */; };
 		E7B84756250EC2CF00DA6923 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7B84755250EC2CF00DA6923 /* Assets.xcassets */; };
@@ -19,10 +21,8 @@
 		E7B84788250ECA8200DA6923 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B8477F250EC3FB00DA6923 /* Size.swift */; };
 		E7B84789250ECA8400DA6923 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B84783250EC43800DA6923 /* Position.swift */; };
 		E7B8478A250ECA8600DA6923 /* GridGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B8477D250EC33500DA6923 /* GridGenerator.swift */; };
-		E7B8478C250ECF7400DA6923 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B8478B250ECF7400DA6923 /* Board.swift */; };
 		E7B8478E250ED08300DA6923 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B8478D250ED08300DA6923 /* Constants.swift */; };
 		E7B8478F250ED0A900DA6923 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B8478D250ED08300DA6923 /* Constants.swift */; };
-		E7B84790250ED10D00DA6923 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B8478B250ECF7400DA6923 /* Board.swift */; };
 		E7B84792250ED1EA00DA6923 /* PositionValueGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B84791250ED1EA00DA6923 /* PositionValueGenerator.swift */; };
 		E7B84793250ED1EA00DA6923 /* PositionValueGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B84791250ED1EA00DA6923 /* PositionValueGenerator.swift */; };
 		E7B84795250ED2E500DA6923 /* PositionValueGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B84794250ED2E500DA6923 /* PositionValueGeneratorTests.swift */; };
@@ -46,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E78D288525104D85007FB150 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		E7B8474E250EC2CD00DA6923 /* MineFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MineFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7B84751250EC2CD00DA6923 /* MineFinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineFinderApp.swift; sourceTree = "<group>"; };
 		E7B84753250EC2CD00DA6923 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,7 +62,6 @@
 		E7B8477F250EC3FB00DA6923 /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
 		E7B84783250EC43800DA6923 /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		E7B84786250EC81400DA6923 /* GridGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridGeneratorTests.swift; sourceTree = "<group>"; };
-		E7B8478B250ECF7400DA6923 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		E7B8478D250ED08300DA6923 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E7B84791250ED1EA00DA6923 /* PositionValueGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionValueGenerator.swift; sourceTree = "<group>"; };
 		E7B84794250ED2E500DA6923 /* PositionValueGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionValueGeneratorTests.swift; sourceTree = "<group>"; };
@@ -154,11 +154,11 @@
 		E7B8477C250EC2F600DA6923 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				E7B8478B250ECF7400DA6923 /* Board.swift */,
-				E7B84783250EC43800DA6923 /* Position.swift */,
-				E7B84791250ED1EA00DA6923 /* PositionValueGenerator.swift */,
+				E78D288525104D85007FB150 /* Cell.swift */,
 				E7B8478D250ED08300DA6923 /* Constants.swift */,
 				E7B8477D250EC33500DA6923 /* GridGenerator.swift */,
+				E7B84783250EC43800DA6923 /* Position.swift */,
+				E7B84791250ED1EA00DA6923 /* PositionValueGenerator.swift */,
 				E7B8477F250EC3FB00DA6923 /* Size.swift */,
 			);
 			path = Core;
@@ -303,9 +303,9 @@
 			files = (
 				E7B84780250EC3FB00DA6923 /* Size.swift in Sources */,
 				E7B84754250EC2CD00DA6923 /* ContentView.swift in Sources */,
-				E7B8478C250ECF7400DA6923 /* Board.swift in Sources */,
 				E7B84784250EC43800DA6923 /* Position.swift in Sources */,
 				E7B8478E250ED08300DA6923 /* Constants.swift in Sources */,
+				E78D288625104D85007FB150 /* Cell.swift in Sources */,
 				E7B8477E250EC33500DA6923 /* GridGenerator.swift in Sources */,
 				E7B84752250EC2CD00DA6923 /* MineFinderApp.swift in Sources */,
 				E7B84792250ED1EA00DA6923 /* PositionValueGenerator.swift in Sources */,
@@ -319,8 +319,8 @@
 				E7B8478F250ED0A900DA6923 /* Constants.swift in Sources */,
 				E7B84793250ED1EA00DA6923 /* PositionValueGenerator.swift in Sources */,
 				E7B8478A250ECA8600DA6923 /* GridGenerator.swift in Sources */,
-				E7B84790250ED10D00DA6923 /* Board.swift in Sources */,
 				E7B84787250EC81400DA6923 /* GridGeneratorTests.swift in Sources */,
+				E78D288725104D85007FB150 /* Cell.swift in Sources */,
 				E7B84789250ECA8400DA6923 /* Position.swift in Sources */,
 				E7B84788250ECA8200DA6923 /* Size.swift in Sources */,
 				E7B84795250ED2E500DA6923 /* PositionValueGeneratorTests.swift in Sources */,

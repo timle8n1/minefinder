@@ -10,10 +10,3 @@ import Foundation
 enum Constants {
     static let mineValue:Int = 9
 }
-
-enum BoardCellState {
-    case hidden
-    case revealed
-    case flagged
-    case exploded
-}

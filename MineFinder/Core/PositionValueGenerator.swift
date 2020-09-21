@@ -8,7 +8,7 @@
 import Foundation
 
 class PositionValueGenerator {
-    static func generate(position: Position, grid: [[Int]]) -> Int {
+    static func generate(position: Position, grid: [[Cell]]) -> Int {
         let minX = position.x > 0 ? position.x - 1 : 0
         let maxX = position.x < grid[0].endIndex - 1 ? position.x + 1 : position.x
         let minY = position.y > 0 ? position.y - 1 : 0
@@ -19,7 +19,7 @@ class PositionValueGenerator {
             for y in minY...maxY {
                 if x == position.x && y == position.y { continue }
                 let neighbor = grid[y][x]
-                if neighbor == Constants.mineValue {
+                if neighbor.isMine {
                     count += 1
                 }
             }
