@@ -22,6 +22,8 @@ enum ClickModes: String, CaseIterable, Hashable, Identifiable  {
 }
 
 struct ContentView: View {
+    @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
+
     private let size = Size(x: 9, y: 9)
     
     @State private var grid = ContentView.generateGrid(startPosition: Position(x: 0, y: 0))
@@ -45,11 +47,22 @@ struct ContentView: View {
         ZStack {
             Color.blue.edgesIgnoringSafeArea(.all)
             
-            VStack {
-                restartButton
-                gameInfo
-                gameGrid
-                clickModeSelector
+            if verticalSizeClass == .compact {
+                HStack {
+                    restartButton
+                    VStack {
+                        gameInfo
+                        gameGrid
+                        clickModeSelector
+                    }
+                }
+            } else {
+                VStack {
+                    gameInfo
+                    clickModeSelector
+                    gameGrid
+                    restartButton
+                }
             }
         }
     }
@@ -110,17 +123,28 @@ struct ContentView: View {
         let display = text(forCell: cell)
                         .id("\(position.x)-\(position.y)")
                         .frame(width: 30, height: 30)
-                        .background(cell.isHidden ? Color.gray : Color.white)
+                        .background(background(forCell: cell))
                         .border(Color.black)
-        
-        return Button(
-            action: {
-                select(position: position)
-            },
-            label: {
-                display
+            .onTapGesture(count: 1) {
+                revealCell(position: position)
             }
-        ).disabled(!cell.isHidden)
+            .onLongPressGesture {
+                flagCell(position: position)
+            }
+        
+        return display
+    }
+    
+    private func background(forCell cell: Cell) -> some View {
+        if cell.isHidden {
+            return Color.gray
+        }
+        
+        if cell.isMine {
+            return Color.red
+        }
+        
+        return Color.white
     }
     
     private func text(forCell cell: Cell) -> Text {
@@ -130,7 +154,7 @@ struct ContentView: View {
         } else if cell.isHidden {
             text = Text(" ").foregroundColor(.white)
         } else if cell.isMine {
-            text = Text("💣").foregroundColor(.red)
+            text = Text("💣")
         } else {
             text = Text(cell.nearbyMineCount > 0 ? "\(cell.nearbyMineCount)" : " ").foregroundColor(.blue)
         }
@@ -144,8 +168,6 @@ struct ContentView: View {
         case .flag:
             flagCell(position: position)
         }
-        
-        checkIfWonGame()
     }
     
     private func checkIfWonGame() {
@@ -193,6 +215,8 @@ struct ContentView: View {
             let revealedCell = grid[position.y][position.x]
             if revealedCell.isMine {
                 loseGame()
+            } else {
+                checkIfWonGame()
             }
         }
     }
