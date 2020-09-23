@@ -54,7 +54,37 @@ class GridGenerator {
         let currentCell = grid[position.y][position.x]
         let updatedCell = Cell.reveal(cell: currentCell)
         
-        return replace(cell: updatedCell, atPosition: position, onGrid: grid)
+        let updatedGrid = replace(cell: updatedCell, atPosition: position, onGrid: grid)
+        if !updatedCell.isMine && updatedCell.nearbyMineCount == 0 {
+            return revealNeighbors(position: position, grid: updatedGrid)
+        } else {
+            return updatedGrid
+        }
+    }
+    
+    private static func revealNeighbors(position: Position, grid: [[Cell]]) -> [[Cell]] {
+        let minX = position.x > 0 ? position.x - 1 : 0
+        let maxX = position.x < grid[0].endIndex - 1 ? position.x + 1 : position.x
+        let minY = position.y > 0 ? position.y - 1 : 0
+        let maxY = position.y < grid.endIndex - 1 ? position.y + 1 : position.y
+        
+        var updatedGrid = grid
+        for x in minX...maxX {
+            for y in minY...maxY {
+                if x == position.x && y == position.y { continue }
+                let neighbor = grid[y][x]
+                if neighbor.isHidden {
+                    let updatedCell = Cell.reveal(cell: neighbor)
+                    let neighborPosition = Position(x: x, y: y)
+                    updatedGrid = replace(cell: updatedCell, atPosition: neighborPosition, onGrid: updatedGrid)
+                    if updatedCell.nearbyMineCount == 0 {
+                        updatedGrid = revealNeighbors(position: neighborPosition, grid: updatedGrid)
+                    }
+                }
+            }
+        }
+        
+        return updatedGrid
     }
     
     private static func replace(cell: Cell, atPosition: Position, onGrid: [[Cell]]) -> [[Cell]] {

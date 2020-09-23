@@ -7,118 +7,214 @@
 
 import SwiftUI
 
+enum GameState: String {
+    case notStarted = "Waiting for first Move"
+    case inProgress = "Make a Move"
+    case lost = "Sorry, you lost!"
+    case won = "Congrats, you won!"
+}
+
+enum ClickModes: String, CaseIterable, Hashable, Identifiable  {
+    case reveal = "Reveal"
+    case flag = "Flag"
+    
+    var id: ClickModes {self}
+}
+
 struct ContentView: View {
     private let size = Size(x: 9, y: 9)
     
-    @State private var grid = ContentView.generateGrid()
-    @State private var clickMode = 0
+    @State private var grid = ContentView.generateGrid(startPosition: Position(x: 0, y: 0))
+    @State private var clickMode = ClickModes.reveal
     @State private var mineCount = 10
-    private let clickModes = ["Reveal", "Flag"]
+    @State private var gameState = GameState.notStarted
     
     private let rows = [
-        GridItem(.fixed(30), spacing: 5),
-        GridItem(.fixed(30), spacing: 5),
-        GridItem(.fixed(30), spacing: 5),
-        GridItem(.fixed(30), spacing: 5),
-        GridItem(.fixed(30), spacing: 5),
-        GridItem(.fixed(30), spacing: 5),
-        GridItem(.fixed(30), spacing: 5),
-        GridItem(.fixed(30), spacing: 5),
-        GridItem(.fixed(30), spacing: 5)
+        GridItem(.fixed(30), spacing: 0),
+        GridItem(.fixed(30), spacing: 0),
+        GridItem(.fixed(30), spacing: 0),
+        GridItem(.fixed(30), spacing: 0),
+        GridItem(.fixed(30), spacing: 0),
+        GridItem(.fixed(30), spacing: 0),
+        GridItem(.fixed(30), spacing: 0),
+        GridItem(.fixed(30), spacing: 0),
+        GridItem(.fixed(30), spacing: 0)
     ]
     
     var body: some View {
         ZStack {
-            Color.gray.edgesIgnoringSafeArea(.all)
+            Color.blue.edgesIgnoringSafeArea(.all)
             
             VStack {
-                Text("Mine Count:\(mineCount)")
-                
-                LazyHGrid(
-                    rows: rows,
-                    alignment: .center,
-                    spacing: 5) {
-                    ForEach(0..<9, id: \.self) { x in
-                        ForEach(0..<9, id: \.self) { y in
-                            let cell = grid[y][x]
-                            let display = text(forCell: cell)
-                            Button(
-                                action: {
-                                    select(position: Position(x: x, y: y))
-                                },
-                                label: {
-                                    display
-                                        .id("\(x)-\(y)")
-                                        .frame(width: 30, height: 30)
-                                        .background(Color.white)
-                                        .border(Color.black)
-                                }
-                            ).id("\(x)-\(y)")
-                        }
-                    }
-                }
-                    
-                Button(
-                    action: {
-                        grid = ContentView.generateGrid()
-                    },
-                    label: {
-                        Text("Restart")
-                            .fontWeight(.bold)
-                            .font(.body)
-                            .padding()
-                            .background(Color.green)
-                            .cornerRadius(20.0)
-                            .foregroundColor(.white)
-                    }
-                )
-                
-                Picker(selection: $clickMode, label: Text("")) {
-                    ForEach(0..<clickModes.count) { index in
-                        Text(self.clickModes[index]).tag(index)
-                    }
-                }.pickerStyle(SegmentedPickerStyle())
+                restartButton
+                gameInfo
+                gameGrid
+                clickModeSelector
             }
         }
+    }
+    
+    var restartButton: some View {
+        Button(
+            action: {
+                grid = ContentView.generateGrid(startPosition: Position(x: 0, y: 0))
+                mineCount = 10
+                gameState = .notStarted
+            },
+            label: {
+                Text("Restart")
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(10.0)
+                    .foregroundColor(.black)
+            }
+        )
+    }
+    
+    var gameInfo: some View {
+        HStack {
+            Text(gameState.rawValue)
+                .padding(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text("\(mineCount) :Mine Count")
+                .padding(.trailing)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+    }
+    
+    var gameGrid: some View {
+        LazyHGrid(
+            rows: rows,
+            alignment: .center,
+            spacing: 0) {
+            ForEach(0..<9, id: \.self) { x in
+                ForEach(0..<9, id: \.self) { y in
+                    button(atPosition: Position(x: x, y: y)).id("\(x)-\(y)")
+                }
+            }
+        }
+    }
+    
+    var clickModeSelector: some View {
+        Picker(selection: $clickMode, label: Text("")) {
+            ForEach(ClickModes.allCases) { value in
+                Text(value.rawValue).tag(value)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
+        .padding([.leading, .trailing])
+    }
+    
+    private func button(atPosition position: Position) -> some View {
+        let cell = grid[position.y][position.x]
+        let display = text(forCell: cell)
+                        .id("\(position.x)-\(position.y)")
+                        .frame(width: 30, height: 30)
+                        .background(cell.isHidden ? Color.gray : Color.white)
+                        .border(Color.black)
+        
+        return Button(
+            action: {
+                select(position: position)
+            },
+            label: {
+                display
+            }
+        ).disabled(!cell.isHidden)
     }
     
     private func text(forCell cell: Cell) -> Text {
         let text: Text
         if cell.isFlagged {
-            text = Text("F").foregroundColor(.red)
+            text = Text("⚠️").foregroundColor(.red)
         } else if cell.isHidden {
-            text = Text("").foregroundColor(.white)
+            text = Text(" ").foregroundColor(.white)
         } else if cell.isMine {
-            text = Text("*").foregroundColor(.red)
+            text = Text("💣").foregroundColor(.red)
         } else {
-            text = Text("\(cell.nearbyMineCount)").foregroundColor(.blue)
+            text = Text(cell.nearbyMineCount > 0 ? "\(cell.nearbyMineCount)" : " ").foregroundColor(.blue)
         }
-        return text
+        return text.fontWeight(.bold)
     }
     
     private func select(position: Position) {
-        let cell = grid[position.y][position.x]
+        switch clickMode {
+        case .reveal:
+            revealCell(position: position)
+        case .flag:
+            flagCell(position: position)
+        }
         
-        if clickMode == 0 {
-            if !cell.isFlagged {
-                grid = GridGenerator.reveal(position: position, grid: grid)
+        checkIfWonGame()
+    }
+    
+    private func checkIfWonGame() {
+        let unresolvedCells = grid.joined().reduce(0) { (result, cell) -> Int in
+            if !cell.isMine && cell.isHidden {
+                return result + 1
             }
-        } else {
-            grid = GridGenerator.flag(position: position, grid: grid)
-            let cells = grid.flatMap { $0 }
-            let flagCount = cells.reduce(0) { (result, cell) -> Int in
-                if cell.isFlagged {
-                    return result + 1
-                } else {
-                    return result
-                }
-            }
-            mineCount = 10 - flagCount
+            return result
+        }
+        
+        if unresolvedCells == 0 {
+            winGame()
         }
     }
     
-    static private func generateGrid() -> [[Cell]] {
-        return GridGenerator.generate(size: Size(x: 9, y: 9), mineCount: 10, startPosition: Position(x: 0, y: 0))!
+    private func flagCell(position: Position) {
+        guard gameState == .inProgress else { return }
+        
+        let cell = grid[position.y][position.x]
+        if cell.isHidden {
+            if cell.isFlagged || mineCount > 0 {
+                grid = GridGenerator.flag(position: position, grid: grid)
+                updateMineCount()
+            }
+        }
+    }
+    
+    private func loseGame() {
+        gameState = .lost
+    }
+    
+    private func revealCell(position: Position) {
+        if gameState == .won || gameState == .lost {
+            return
+        }
+        
+        if gameState == .notStarted {
+            gameState = .inProgress
+            grid = GridGenerator.generate(size: size, mineCount: 10, startPosition: position)!
+        }
+        
+        let cell = grid[position.y][position.x]
+        if !cell.isFlagged && cell.isHidden {
+            grid = GridGenerator.reveal(position: position, grid: grid)
+            let revealedCell = grid[position.y][position.x]
+            if revealedCell.isMine {
+                loseGame()
+            }
+        }
+    }
+    
+    private func updateMineCount() {
+        let cells = grid.flatMap { $0 }
+        let flagCount = cells.reduce(0) { (result, cell) -> Int in
+            if cell.isFlagged {
+                return result + 1
+            } else {
+                return result
+            }
+        }
+        mineCount = 10 - flagCount
+    }
+    
+    private func winGame() {
+        gameState = .won
+    }
+    
+    static private func generateGrid(startPosition: Position) -> [[Cell]] {
+        return GridGenerator.generate(size: Size(x: 9, y: 9), mineCount: 10, startPosition: startPosition)!
     }
 }
 
