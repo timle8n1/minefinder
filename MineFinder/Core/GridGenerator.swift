@@ -50,7 +50,7 @@ class GridGenerator {
         return replace(cell: updatedCell, atPosition: position, onGrid: grid)
     }
     
-    static func reveal(position: Position, grid: [[Cell]]) -> [[Cell]] {
+    static func reveal(position: Position, grid: [[Cell]]) -> [[[Cell]]] {
         let currentCell = grid[position.y][position.x]
         let updatedCell = Cell.reveal(cell: currentCell)
         
@@ -58,17 +58,17 @@ class GridGenerator {
         if !updatedCell.isMine && updatedCell.nearbyMineCount == 0 {
             return revealNeighbors(position: position, grid: updatedGrid)
         } else {
-            return updatedGrid
+            return [updatedGrid]
         }
     }
     
-    private static func revealNeighbors(position: Position, grid: [[Cell]]) -> [[Cell]] {
+    private static func revealNeighbors(position: Position, grid: [[Cell]]) -> [[[Cell]]] {
         let minX = position.x > 0 ? position.x - 1 : 0
         let maxX = position.x < grid[0].endIndex - 1 ? position.x + 1 : position.x
         let minY = position.y > 0 ? position.y - 1 : 0
         let maxY = position.y < grid.endIndex - 1 ? position.y + 1 : position.y
         
-        var updatedGrid = grid
+        var updatedGrids = [grid]
         for x in minX...maxX {
             for y in minY...maxY {
                 if x == position.x && y == position.y { continue }
@@ -76,15 +76,15 @@ class GridGenerator {
                 if neighbor.isHidden {
                     let updatedCell = Cell.reveal(cell: neighbor)
                     let neighborPosition = Position(x: x, y: y)
-                    updatedGrid = replace(cell: updatedCell, atPosition: neighborPosition, onGrid: updatedGrid)
+                    updatedGrids.append(replace(cell: updatedCell, atPosition: neighborPosition, onGrid: updatedGrids.last!))
                     if updatedCell.nearbyMineCount == 0 {
-                        updatedGrid = revealNeighbors(position: neighborPosition, grid: updatedGrid)
+                        updatedGrids.append(contentsOf: revealNeighbors(position: neighborPosition, grid: updatedGrids.last!))
                     }
                 }
             }
         }
         
-        return updatedGrid
+        return updatedGrids
     }
     
     private static func replace(cell: Cell, atPosition: Position, onGrid: [[Cell]]) -> [[Cell]] {

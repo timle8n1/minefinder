@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E7359DC2251BF401006739CF /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7359DC1251BF401006739CF /* GameView.swift */; };
 		E78D288625104D85007FB150 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78D288525104D85007FB150 /* Cell.swift */; };
 		E78D288725104D85007FB150 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78D288525104D85007FB150 /* Cell.swift */; };
 		E7B84752250EC2CD00DA6923 /* MineFinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B84751250EC2CD00DA6923 /* MineFinderApp.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E7359DC1251BF401006739CF /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		E78D288525104D85007FB150 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		E7B8474E250EC2CD00DA6923 /* MineFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MineFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7B84751250EC2CD00DA6923 /* MineFinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineFinderApp.swift; sourceTree = "<group>"; };
@@ -115,11 +117,12 @@
 		E7B84750250EC2CD00DA6923 /* MineFinder */ = {
 			isa = PBXGroup;
 			children = (
-				E7B8477C250EC2F600DA6923 /* Core */,
-				E7B84751250EC2CD00DA6923 /* MineFinderApp.swift */,
-				E7B84753250EC2CD00DA6923 /* ContentView.swift */,
-				E7B84755250EC2CF00DA6923 /* Assets.xcassets */,
 				E7B8475A250EC2CF00DA6923 /* Info.plist */,
+				E7B84753250EC2CD00DA6923 /* ContentView.swift */,
+				E7359DC1251BF401006739CF /* GameView.swift */,
+				E7B84751250EC2CD00DA6923 /* MineFinderApp.swift */,
+				E7B84755250EC2CF00DA6923 /* Assets.xcassets */,
+				E7B8477C250EC2F600DA6923 /* Core */,
 				E7B84757250EC2CF00DA6923 /* Preview Content */,
 			);
 			path = MineFinder;
@@ -305,6 +308,7 @@
 				E7B84754250EC2CD00DA6923 /* ContentView.swift in Sources */,
 				E7B84784250EC43800DA6923 /* Position.swift in Sources */,
 				E7B8478E250ED08300DA6923 /* Constants.swift in Sources */,
+				E7359DC2251BF401006739CF /* GameView.swift in Sources */,
 				E78D288625104D85007FB150 /* Cell.swift in Sources */,
 				E7B8477E250EC33500DA6923 /* GridGenerator.swift in Sources */,
 				E7B84752250EC2CD00DA6923 /* MineFinderApp.swift in Sources */,

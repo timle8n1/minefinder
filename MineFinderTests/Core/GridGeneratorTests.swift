@@ -99,17 +99,17 @@ class GridGeneratorTests: XCTestCase {
         let position = Position(x: 1, y: 1)
         let updatedGrid = GridGenerator.reveal(position: position, grid: grid)
         
-        XCTAssertEqual(0, updatedGrid.startIndex)
-        XCTAssertEqual(0, updatedGrid[0].startIndex)
-        XCTAssertEqual(3, updatedGrid.endIndex)
-        XCTAssertEqual(3, updatedGrid[0].endIndex)
+        XCTAssertEqual(0, updatedGrid.last!.startIndex)
+        XCTAssertEqual(0, updatedGrid.last![0].startIndex)
+        XCTAssertEqual(3, updatedGrid.last!.endIndex)
+        XCTAssertEqual(3, updatedGrid.last![0].endIndex)
         
         for x in 0..<3 {
             for y in 0..<3 {
                 if x == 1 && y == 1 {
-                    XCTAssertFalse(updatedGrid[y][x].isHidden)
+                    XCTAssertFalse(updatedGrid.last![y][x].isHidden)
                 } else {
-                    XCTAssertTrue(updatedGrid[y][x].isHidden)
+                    XCTAssertTrue(updatedGrid.last![y][x].isHidden)
                 }
             }
         }
